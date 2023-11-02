@@ -131,18 +131,11 @@ with open('data/POS_Determiner.txt', 'w', encoding='UTF-8') as f:
             f.write(f"{word}: {pos}\n")
 
 # separate by part of speech: Rest
-with open('data/POS_Determiner.txt', 'w', encoding='UTF-8') as f:
+with open('data/POS_Rest.txt', 'w', encoding='UTF-8') as f:
     for word, pos in tagged_text:
         if pos in ['CC', 'CD', 'IN', 'MD', 'RP', 'TO', 'UH', 'WDT', 'WP', 'WP$', 'WRB']:
             f.write(f"{word}: {pos}\n")
-
-
-
-
-
-
-
-
+ 
 
 random_word = random.choice(list(mc_dict.keys()))
 generated_text.append(random_word)
