@@ -13,7 +13,11 @@ from PIL import Image
 import nltk
 nltk.download('punkt')
 nltk.download('averaged_perceptron_tagger')
-from nltk import word_tokenize, pos_tag # parts of speech
+from nltk import word_tokenize, pos_tag, ne_chunk # parts of speech
+nltk.download('maxent_ne_chunker')
+nltk.download('words')
+import spacy
+
 # -------------------------------------------------------------------------
 # variables
 
@@ -21,7 +25,8 @@ generated_text = []
 maximum_generated_text_length = 10
 # Initialize the dictionary for Markov chain
 mc_dict = {}
-
+#download english model
+nlp = spacy.load("en_core_web_sm")
 # --------------------------------------------
 # clear console on start
 clear = lambda: os.system('cls')  # on Windows System
@@ -136,6 +141,17 @@ with open('data/POS_Rest.txt', 'w', encoding='UTF-8') as f:
         if pos in ['CC', 'CD', 'IN', 'MD', 'RP', 'TO', 'UH', 'WDT', 'WP', 'WP$', 'WRB']:
             f.write(f"{word}: {pos}\n")
  
+
+ # NER------------------
+named_entities = ne_chunk(tagged_text)
+proper_nouns = [subtree.leaves()[0][0] for subtree in named_entities if type(subtree) == nltk.Tree]
+with open('data/NER.txt', 'w', encoding='utf-8') as f:
+    for subtree in named_entities:
+        if isinstance(subtree, nltk.Tree):
+            if subtree.label() == 'PERSON':
+                name = ' '.join([word for word, pos in subtree.leaves()])
+                f.write(name + '\n')
+#-----------------------
 
 random_word = random.choice(list(mc_dict.keys()))
 generated_text.append(random_word)
