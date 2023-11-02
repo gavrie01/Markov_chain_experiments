@@ -1,0 +1,7 @@
+string
+os
+wordcloud
+matplotlib.pyplot
+random
+numpy
+nltk
